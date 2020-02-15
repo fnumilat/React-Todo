@@ -1,14 +1,94 @@
-import React from 'react';
+import React, { Component } from 'react';
+import TodoList from './components/TodoComponents/TodoList';
+import TodoForm from './components/TodoComponents/TodoForm';
+import "./components/TodoComponents/Todo.css";
 
-class App extends React.Component {
+const todos = [
+  {
+    task: 'Do the stock inventory',
+    id: 1,
+    completed: false
+  },
+  {
+    task: 'Check the receiving office for packages',
+    id: 2,
+    completed: false
+  },
+  {
+    task: "Make the monthly accuracy report",
+    id: 3,
+    completed: false
+  }
+];
+
+
+class App extends Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
+  constructor() {
+    super();
+    this.state = {
+      todos
+    };
+  }
+
+  toggleTodo = todoId => {
+    console.log(todoId);
+
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todoId === todo.id) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          };
+        }
+        return todo;
+      })
+    });
+  };
+
+  clearCompleted = e => {
+    e.preventDefault();
+    console.log(this.state.todos);
+    this.setState({
+      todos: this.state.todos.filter(todo => todo.completed === false)
+    });
+    console.log(this.state.todos);
+  };
+
+  addTodo = (e, todo) => {
+    e.preventDefault();
+
+    const newTodo = {
+      task: todo,
+      id: Date.now(),
+      completed: false
+    };
+
+    this.setState({
+      todos: [...this.state.todos, newTodo]
+    });
+  };
+
   render() {
     return (
-      <div>
-        <h2>Welcome to your Todo App!</h2>
+      <>
+      <div className="Main-Box">
+      <h1 className="Main-Box-Title">Milat's Daily To Dos</h1>
+      <div className="Form-Box">
+        <TodoForm addTodo={this.addTodo}/>
       </div>
+      <div className="Todos-Box">
+        <TodoList
+        todos={this.state.todos}
+        toggleTodo={this.toggleTodo}
+        clearCompleted={this.clearCompleted}
+        />
+     </div>
+     </div>
+     </>
     );
   }
 }
