@@ -19,7 +19,9 @@ class TodoForm extends Component {
 
   submitTodo = e => {
     e.preventDefault();
+    const form = e.target
     this.props.addTodo(e, this.state.todo);
+    form.reset();
   };
 
 

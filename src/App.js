@@ -61,6 +61,7 @@ class App extends Component {
   addTodo = (e, todo) => {
     e.preventDefault();
 
+
     const newTodo = {
       task: todo,
       id: Date.now(),
